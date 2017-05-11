@@ -19,6 +19,11 @@ class Router extends PureComponent {
     }),
   }
 
+  static defaultProps = {
+    route: {},
+    params: {},
+  }
+
   constructor(props) {
     super(props)
     this.current = {
@@ -31,32 +36,40 @@ class Router extends PureComponent {
     }
   }
 
+  componentWillUpdate(props) {
+    if (props.loading !== this.props.loading) {
+      this.current.route.loading = props.loading
+    }
+  }
+
   transition(location) {
     transition({
       location,
       strict: this.props.strict,
       routes: this.props.routes,
       dispatch: this.props.dispatch,
-      beforeRender: ({ route, params }) => {
-        this.current = { route, params }
+      beforeRender: result => {
+        this.current = {
+          route: { ...result.route, loading: false },
+          params: result.params,
+        }
         if (this.props.onChange) {
-          this.props.onChange({ route, params, location })
+          this.props.onChange({
+            route: result.route,
+            params: result.params,
+            location,
+          })
         }
       },
     })
   }
 
   renderRoute(route, params) {
-    const { location, loading } = this.props
-    const { components, ...props } = route
-
-    props.loading = loading
-
-    return components.reduceRight((children, Route) => (
+    return route.components.reduceRight((children, Route) => (
       <Route
-        route={props}
+        route={route}
         params={params}
-        location={location}
+        location={this.props.location}
         children={children}
       />
     ), null)
