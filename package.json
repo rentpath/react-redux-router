@@ -1,6 +1,6 @@
 {
   "name": "react-redux-router",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "author": "Ari Bouius <abouius@rentpath.com>",
   "main": "index.js",
   "license": "MIT",
