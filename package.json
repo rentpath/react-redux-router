@@ -30,6 +30,7 @@
     "eslint-plugin-import": "^2.2.0",
     "eslint-plugin-react": "^6.10.3",
     "jsdom": "^10.1.0",
+    "jsdom-global": "^3.0.2",
     "mocha": "^3.2.0",
     "react": "^15.4.2",
     "react-addons-test-utils": "^15.4.2",
@@ -43,7 +44,6 @@
   "dependencies": {
     "babel-runtime": "^6.23.0",
     "history": "^4.6.1",
-    "jsdom-global": "^3.0.2",
     "little-router": "2.3.1",
     "parse-location": "^1.0.5",
     "prop-types": "^15.5.8"
