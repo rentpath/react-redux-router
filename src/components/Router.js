@@ -50,7 +50,7 @@ class Router extends PureComponent {
       dispatch: this.props.dispatch,
       beforeRender: result => {
         this.current = {
-          route: { ...result.route, loading: false },
+          route: result.route,
           params: result.params,
         }
         if (this.props.onChange) {

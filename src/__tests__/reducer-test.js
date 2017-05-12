@@ -64,18 +64,15 @@ describe('reducer', () => {
       route: {
         name: 'foo',
         status: 200,
+        loading: true,
       },
     }
 
-    it('sets loading', () => {
-      const state = reduce(initial, action)
-      expect(state.route.loading).to.equal(true)
-    })
-
     it('sets route props', () => {
       const state = reduce(initial, action)
-      expect(state.route.name).to.eql('foo')
-      expect(state.route.status).to.eql(200)
+      expect(state.route.name).to.equal('foo')
+      expect(state.route.status).to.equal(200)
+      expect(state.route.loading).to.equal(true)
     })
 
     it('sets params', () => {
@@ -90,18 +87,15 @@ describe('reducer', () => {
       route: {
         name: 'bar',
         status: 200,
+        loading: false,
       },
     }
 
-    it('sets loading', () => {
-      const state = reduce(initial, action)
-      expect(state.route.loading).to.equal(false)
-    })
-
     it('sets route props', () => {
       const state = reduce(initial, action)
-      expect(state.route.name).to.eql('bar')
-      expect(state.route.status).to.eql(200)
+      expect(state.route.name).to.equal('bar')
+      expect(state.route.status).to.equal(200)
+      expect(state.route.loading).to.equal(false)
     })
   })
 

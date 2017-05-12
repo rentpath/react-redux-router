@@ -47,14 +47,15 @@ export default async (options = {}) => {
     }
   })
 
+  // set loading flag
+  route.loading = true
+
   // ensure route has a status
   if (!route.status) {
-    route.status = branches.length
-      ? STATUS_OK
-      : STATUS_NOT_FOUND
+    route.status = branches.length ? STATUS_OK : STATUS_NOT_FOUND
   }
 
-  // clean data for dispatch
+  // clean route for dispatch
   sanitized = sanitize(route)
   delete sanitized.routes
 
@@ -105,8 +106,11 @@ export default async (options = {}) => {
     }
   }
 
-  // sort components into proper order and
-  // add back to route object
+  // update loading flag
+  route.loading = false
+
+  // sort components into proper order before
+  // adding back to route
   route.components = Object.keys(components).sort().map(key => (
     components[key]
   ))
@@ -129,7 +133,7 @@ export default async (options = {}) => {
     beforeRender(result)
   }
 
-  // clean data for dispatch
+  // clean route for dispatch
   sanitized = sanitize(route)
   delete sanitized.routes
   delete sanitized.components

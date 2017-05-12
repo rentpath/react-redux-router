@@ -65,7 +65,6 @@ export default (state = initial, action) => {
         ...state,
         route: {
           ...action.route,
-          loading: true,
         },
         params: {
           ...action.params,
@@ -77,7 +76,6 @@ export default (state = initial, action) => {
         ...state,
         route: {
           ...action.route,
-          loading: false,
         },
       }
 
