@@ -122,7 +122,7 @@ describe('transition', () => {
     })
 
     it('dispatches pojo route actions', async () => {
-      const action = { foo: 'foo' }
+      const action = { type: 'FOO' }
       const dispatch = sinon.spy()
       const routes = [{ path: '/foo', action }]
       await transition({ location, routes, dispatch })
@@ -130,11 +130,22 @@ describe('transition', () => {
     })
 
     it('dispatches function route actions', async () => {
-      const action = () => ({ bar: 'bar' })
+      const action = () => ({ type: 'BAR' })
       const dispatch = sinon.spy()
       const routes = [{ path: '/foo', action }]
       await transition({ location, routes, dispatch })
       expect(dispatch).to.have.been.calledWith(action())
+    })
+
+    it('dispatches route actions loaded via resolver', async () => {
+      const dispatch = sinon.spy()
+      const action = { type: 'FOO' }
+      const routes = [{
+        path: '/foo',
+        resolve: async () => ({ action }),
+      }]
+      await transition({ location, routes, dispatch })
+      expect(dispatch).to.have.been.calledWith(action)
     })
   })
 })

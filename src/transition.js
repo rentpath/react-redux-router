@@ -74,10 +74,14 @@ export default async (options = {}) => {
     const resolver = resolvers[index]
     const response = Promise.resolve(resolver({ route, params, location }))
     promises.push(response.then(({
+      action,
       component,
       ...props
     } = {}) => {
       Object.assign(route, props)
+      if (action) {
+        actions.push(action)
+      }
       if (component) {
         components[index] = component
       }
