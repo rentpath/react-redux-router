@@ -1993,9 +1993,9 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
-little-router@2.3.1:
-  version "2.3.1"
-  resolved "https://registry.yarnpkg.com/little-router/-/little-router-2.3.1.tgz#202cf3baadd8a916ed6df9a22d2dc5018158748a"
+little-router@2.3.2:
+  version "2.3.2"
+  resolved "https://registry.yarnpkg.com/little-router/-/little-router-2.3.2.tgz#173b3f9eed71b5c6288bddde5a84c5c1a9dc86e6"
   dependencies:
     babel-runtime "^6.22.0"
     path-to-regexp "^1.6.0"
