@@ -38,7 +38,7 @@ const reduceLocation = (state, { location }) => {
 
   return Object.assign(loc, {
     href: [
-      protocol,
+      protocol ? `${protocol}//` : '',
       protocol ? hostname : '',
       protocol && hostname && port ? `:${port}` : '',
       pathname,

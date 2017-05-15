@@ -42,6 +42,23 @@ describe('reducer', () => {
       expect(state.location.protocol).to.equal('http:')
     })
 
+    it('builds a partial href', () => {
+      const state = reduce(initial, action)
+      expect(state.location.href).to.equal('/foo')
+    })
+
+    it('builds a complete href', () => {
+      const state = reduce(initial, {
+        ...action,
+        location: {
+          protocol: 'http:',
+          hostname: 'foo.com',
+          pathname: '/bar',
+        },
+      })
+      expect(state.location.href).to.equal('http://foo.com/bar')
+    })
+
     it('sets route status when provied', () => {
       const status = 301
       const state = reduce(initial, { ...action, status })
