@@ -92,6 +92,7 @@ export default (state = initial, action) => {
       return {
         ...state,
         route: {
+          ...state.route,
           loading: action.loading,
         },
       }
