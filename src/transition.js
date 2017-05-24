@@ -47,17 +47,23 @@ export default async (options = {}) => {
     }
   })
 
-  // set loading flag
+  // toggle loading flag
   route.loading = true
 
-  // ensure route has a status
+  // ensure route has a status code
   if (!route.status) {
     route.status = branches.length ? STATUS_OK : STATUS_NOT_FOUND
   }
 
-  // clean route for dispatch
+  // these are serializable but we don't want
+  // them added to the state or passed down
+  delete route.routes
+
+  // prepare route object for dispatch
   sanitized = sanitize(route)
-  delete sanitized.routes
+
+  // create container for middleware updates
+  const transition = {}
 
   // dispatch route change action
   if (dispatch) {
@@ -65,6 +71,7 @@ export default async (options = {}) => {
       route: sanitized,
       params,
       location,
+      transition,
     }))
   }
 
@@ -97,9 +104,9 @@ export default async (options = {}) => {
     promises = []
     actions.forEach(action => {
       if (isFunc(action)) {
-        const resp = dispatch(action({ route, params, location }))
-        if (isPromise(resp)) {
-          promises.push(resp)
+        const promise = dispatch(action({ route, params, location }))
+        if (isPromise(promise)) {
+          promises.push(promise)
         }
       } else {
         dispatch(action)
@@ -110,7 +117,13 @@ export default async (options = {}) => {
     }
   }
 
-  // update loading flag
+  // exit if transition was invalidated
+  // by a route action
+  if (transition.invalid) {
+    return undefined
+  }
+
+  // toggle loading flag
   route.loading = false
 
   // sort components into proper order before
@@ -137,9 +150,22 @@ export default async (options = {}) => {
     beforeRender(result)
   }
 
-  // clean route for dispatch
+  // exit if transition was invalidated
+  // by beforeRender callback
+  if (transition.invalid) {
+    return undefined
+  }
+
+  // update local route status code if a status change
+  // was dispatched in route action or beforeRender
+  if (transition.status) {
+    route.status = transition.status
+  }
+
+  // prepare route object for dispatch
   sanitized = sanitize(route)
-  delete sanitized.routes
+
+  // we don't want these in the state
   delete sanitized.components
 
   // dispatch render route action

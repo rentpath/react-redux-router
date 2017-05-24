@@ -6,14 +6,12 @@ import { initRouter, pop } from '../actions'
 
 class Router extends PureComponent {
   static propTypes = {
+    router: PropTypes.object.isRequired,
     routes: PropTypes.array.isRequired,
-    loading: PropTypes.bool.isRequired,
-    location: PropTypes.object.isRequired,
     dispatch: PropTypes.func.isRequired,
     initialLocation: PropTypes.object,
     strict: PropTypes.bool,
     onChange: PropTypes.func,
-    params: PropTypes.object,
     route: PropTypes.shape({
       components: PropTypes.array,
     }),
@@ -21,24 +19,24 @@ class Router extends PureComponent {
 
   static defaultProps = {
     route: {},
-    params: {},
   }
 
   constructor(props) {
     super(props)
-    this.current = {
-      route: props.route,
-      params: props.params,
-    }
     props.dispatch(initRouter(this))
+    this.route = {
+      ...props.route,
+      ...props.router.route,
+    }
     if (props.initialLocation) {
       props.dispatch(pop(props.initialLocation))
     }
   }
 
   componentWillUpdate(props) {
-    if (props.loading !== this.props.loading) {
-      this.current.route.loading = props.loading
+    this.route = {
+      ...this.route,
+      ...props.router.route,
     }
   }
 
@@ -49,9 +47,9 @@ class Router extends PureComponent {
       routes: this.props.routes,
       dispatch: this.props.dispatch,
       beforeRender: result => {
-        this.current = {
-          route: result.route,
-          params: result.params,
+        this.route = {
+          ...result.route,
+          ...this.props.router.route,
         }
         if (this.props.onChange) {
           this.props.onChange({
@@ -64,20 +62,18 @@ class Router extends PureComponent {
     })
   }
 
-  renderRoute(route, params) {
-    return route.components.reduceRight((children, Route) => (
+  render() {
+    const { router } = this.props
+    const { components = [] } = this.route
+
+    return components.reduceRight((children, Route) => (
       <Route
-        route={route}
-        params={params}
-        location={this.props.location}
+        route={this.route}
+        params={router.params}
+        location={router.location}
         children={children}
       />
     ), null)
-  }
-
-  render() {
-    const { route, params } = this.current
-    return route ? this.renderRoute(route, params) : null
   }
 }
 
@@ -89,7 +85,6 @@ export default connect((state, { selectState }) => {
     throw new Error('<Router>: expected to find router state using key `router`.')
   }
   return {
-    loading: router.route.loading,
-    location: router.location,
+    router,
   }
 })(Router)

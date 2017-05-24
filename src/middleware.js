@@ -8,7 +8,9 @@ import {
   GO_BACK,
   GO_FORWARD,
   INIT_ROUTER,
+  CHANGE_ROUTE,
   RENDER_ROUTE,
+  CHANGE_STATUS,
   CHANGE_LOCATION,
 } from './const'
 
@@ -24,34 +26,47 @@ const buildPath = location => (
   `${location.pathname}${location.search}${location.hash}`
 )
 
-export default ({
-  history = createHistory(),
-} = {}) => ({ dispatch }) => {
-  let path
+export default (
+  config = {},
+) => ({ dispatch }) => {
   let resp
   let router
+  let history
+  let transition
 
-  history.listen((location, action) => {
-    if (action !== POP) return
-    dispatch(pop(location))
-  })
+  if (config.history) {
+    history = config.history
+  } else if (config.history === undefined && typeof window !== 'undefined') {
+    history = createHistory()
+  }
+
+  if (history) {
+    history.listen((location, action) => {
+      if (action !== POP) return
+      dispatch(pop(location))
+    })
+  }
 
   return next => action => {
     switch (action.type) {
       case INIT_ROUTER:
         router = action.router
-        return next(action)
+        break
 
       case GO: case GO_BACK: case GO_FORWARD:
-        history[methods[action.type]](action.index)
-        return next(action)
+        if (history) {
+          history[methods[action.type]](action.index)
+        }
+        break
 
       case CHANGE_LOCATION:
         resp = next(action)
-        path = buildPath(action.location)
 
-        if (methods[action.method]) {
-          history[methods[action.method]](path)
+        if (transition) {
+          transition.invalid = true
+        }
+        if (history && methods[action.method]) {
+          history[methods[action.method]](buildPath(action.location))
         }
         if (router) {
           router.transition(action.location)
@@ -59,11 +74,21 @@ export default ({
 
         return resp
 
-      case RENDER_ROUTE:
-        return buildPath(action.location) === path ? next(action) : undefined
+      case CHANGE_ROUTE:
+        transition = action.transition
+        break
 
-      default:
-        return next(action)
+      case CHANGE_STATUS:
+        if (transition) {
+          transition.status = action.status
+        }
+        break
+
+      case RENDER_ROUTE:
+        transition = null
+        break
     }
+
+    return next(action)
   }
 }
