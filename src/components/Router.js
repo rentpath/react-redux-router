@@ -34,9 +34,11 @@ class Router extends PureComponent {
   }
 
   componentWillUpdate(props) {
-    this.route = {
-      ...this.route,
-      ...props.router.route,
+    if (props.router.route !== this.props.router.route) {
+      this.route = {
+        ...this.route,
+        ...props.router.route,
+      }
     }
   }
 
