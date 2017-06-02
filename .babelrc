@@ -1,6 +1,6 @@
 {
   "presets": [
-    "es2015",
+    ["es2015", { "modules": false }],
     "react"
   ],
   "plugins": [
@@ -8,5 +8,12 @@
     "transform-class-properties",
     "babel-plugin-transform-object-rest-spread",
     "transform-async-to-generator"
-  ]
+  ],
+  "env": {
+    "commonjs": {
+      "plugins": [
+        ["transform-es2015-modules-commonjs", { "loose": true }]
+      ]
+    },
+  }
 }
