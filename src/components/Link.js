@@ -56,12 +56,12 @@ export default class Link extends PureComponent {
 
   render() {
     const { to, replace: repl, dispatch, ...props } = this.props
-    const location = parseLocation(to)
+    const href = typeof to === 'string' ? to : parseLocation(to).href
 
     return (
       <a
         {...props}
-        href={location.href}
+        href={href}
         onClick={this.handleClick}
       />
     )
