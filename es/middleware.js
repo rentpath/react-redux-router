@@ -1,30 +1,18 @@
-'use strict';
-
-exports.__esModule = true;
-
-var _defineProperty2 = require('babel-runtime/helpers/defineProperty');
-
-var _defineProperty3 = _interopRequireDefault(_defineProperty2);
+import _defineProperty from 'babel-runtime/helpers/defineProperty';
 
 var _methods;
 
-var _createBrowserHistory = require('history/createBrowserHistory');
+import createHistory from 'history/createBrowserHistory';
+import { pop } from './actions';
+import { POP, PUSH, REPLACE, GO, GO_BACK, GO_FORWARD, INIT_ROUTER, CHANGE_ROUTE, RENDER_ROUTE, CHANGE_STATUS, CHANGE_LOCATION } from './const';
 
-var _createBrowserHistory2 = _interopRequireDefault(_createBrowserHistory);
-
-var _actions = require('./actions');
-
-var _const = require('./const');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-var methods = (_methods = {}, (0, _defineProperty3.default)(_methods, _const.PUSH, 'push'), (0, _defineProperty3.default)(_methods, _const.REPLACE, 'replace'), (0, _defineProperty3.default)(_methods, _const.GO, 'go'), (0, _defineProperty3.default)(_methods, _const.GO_BACK, 'goBack'), (0, _defineProperty3.default)(_methods, _const.GO_FORWARD, 'goForward'), _methods);
+var methods = (_methods = {}, _defineProperty(_methods, PUSH, 'push'), _defineProperty(_methods, REPLACE, 'replace'), _defineProperty(_methods, GO, 'go'), _defineProperty(_methods, GO_BACK, 'goBack'), _defineProperty(_methods, GO_FORWARD, 'goForward'), _methods);
 
 var buildPath = function buildPath(location) {
   return '' + location.pathname + location.search + location.hash;
 };
 
-exports.default = function () {
+export default (function () {
   var config = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
   return function (_ref) {
     var dispatch = _ref.dispatch;
@@ -37,30 +25,30 @@ exports.default = function () {
     if (config.history) {
       history = config.history;
     } else if (config.history === undefined && typeof window !== 'undefined') {
-      history = (0, _createBrowserHistory2.default)();
+      history = createHistory();
     }
 
     if (history) {
       history.listen(function (location, action) {
-        if (action !== _const.POP) return;
-        dispatch((0, _actions.pop)(location));
+        if (action !== POP) return;
+        dispatch(pop(location));
       });
     }
 
     return function (next) {
       return function (action) {
         switch (action.type) {
-          case _const.INIT_ROUTER:
+          case INIT_ROUTER:
             router = action.router;
             break;
 
-          case _const.GO:case _const.GO_BACK:case _const.GO_FORWARD:
+          case GO:case GO_BACK:case GO_FORWARD:
             if (history) {
               history[methods[action.type]](action.index);
             }
             break;
 
-          case _const.CHANGE_LOCATION:
+          case CHANGE_LOCATION:
             resp = next(action);
 
             if (transition) {
@@ -75,17 +63,17 @@ exports.default = function () {
 
             return resp;
 
-          case _const.CHANGE_ROUTE:
+          case CHANGE_ROUTE:
             transition = action.transition;
             break;
 
-          case _const.CHANGE_STATUS:
+          case CHANGE_STATUS:
             if (transition) {
               transition.status = action.status;
             }
             break;
 
-          case _const.RENDER_ROUTE:
+          case RENDER_ROUTE:
             transition = null;
             break;
         }
@@ -94,4 +82,4 @@ exports.default = function () {
       };
     };
   };
-};
+});

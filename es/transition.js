@@ -1,48 +1,24 @@
-'use strict';
+import _regeneratorRuntime from 'babel-runtime/regenerator';
+import _Promise from 'babel-runtime/core-js/promise';
+import _Object$keys from 'babel-runtime/core-js/object/keys';
+import _Object$assign from 'babel-runtime/core-js/object/assign';
+import _objectWithoutProperties from 'babel-runtime/helpers/objectWithoutProperties';
+import _asyncToGenerator from 'babel-runtime/helpers/asyncToGenerator';
 
-exports.__esModule = true;
+var _this = this;
 
-var _regenerator = require('babel-runtime/regenerator');
+import { matchRoutes } from 'little-router';
+import { changeRoute, renderRoute } from './actions';
+import { isFunc, isPromise, sanitize } from './utils';
+import { STATUS_OK, STATUS_NOT_FOUND } from './const';
 
-var _regenerator2 = _interopRequireDefault(_regenerator);
-
-var _promise = require('babel-runtime/core-js/promise');
-
-var _promise2 = _interopRequireDefault(_promise);
-
-var _keys = require('babel-runtime/core-js/object/keys');
-
-var _keys2 = _interopRequireDefault(_keys);
-
-var _assign = require('babel-runtime/core-js/object/assign');
-
-var _assign2 = _interopRequireDefault(_assign);
-
-var _objectWithoutProperties2 = require('babel-runtime/helpers/objectWithoutProperties');
-
-var _objectWithoutProperties3 = _interopRequireDefault(_objectWithoutProperties2);
-
-var _asyncToGenerator2 = require('babel-runtime/helpers/asyncToGenerator');
-
-var _asyncToGenerator3 = _interopRequireDefault(_asyncToGenerator2);
-
-var _littleRouter = require('little-router');
-
-var _actions = require('./actions');
-
-var _utils = require('./utils');
-
-var _const = require('./const');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-exports.default = function () {
-  var _ref = (0, _asyncToGenerator3.default)(_regenerator2.default.mark(function _callee() {
+export default (function () {
+  var _ref = _asyncToGenerator(_regeneratorRuntime.mark(function _callee() {
     var options = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
     var strict, _options$routes, routes, _options$location, location, dispatch, beforeRender, route, params, actions, resolvers, components, promise, promises, sanitized, branches, transition, result;
 
-    return _regenerator2.default.wrap(function _callee$(_context) {
+    return _regeneratorRuntime.wrap(function _callee$(_context) {
       while (1) {
         switch (_context.prev = _context.next) {
           case 0:
@@ -58,7 +34,7 @@ exports.default = function () {
 
             // match route branches
 
-            branches = (0, _littleRouter.matchRoutes)({
+            branches = matchRoutes({
               path: location.pathname || '',
               routes: routes,
               strict: strict
@@ -72,11 +48,10 @@ exports.default = function () {
                   action = _branch$route.action,
                   resolve = _branch$route.resolve,
                   component = _branch$route.component,
-                  rest = (0, _objectWithoutProperties3.default)(_branch$route, ['action', 'resolve', 'component']);
+                  rest = _objectWithoutProperties(_branch$route, ['action', 'resolve', 'component']);
 
-
-              (0, _assign2.default)(route, rest);
-              (0, _assign2.default)(params, branch.params);
+              _Object$assign(route, rest);
+              _Object$assign(params, branch.params);
 
               if (action) {
                 actions.push(action);
@@ -94,7 +69,7 @@ exports.default = function () {
 
             // ensure route has a status code
             if (!route.status) {
-              route.status = branches.length ? _const.STATUS_OK : _const.STATUS_NOT_FOUND;
+              route.status = branches.length ? STATUS_OK : STATUS_NOT_FOUND;
             }
 
             // these are serializable but we don't want
@@ -102,7 +77,7 @@ exports.default = function () {
             delete route.routes;
 
             // prepare route object for dispatch
-            sanitized = (0, _utils.sanitize)(route);
+            sanitized = sanitize(route);
 
             // create container for middleware updates
             transition = {};
@@ -110,7 +85,7 @@ exports.default = function () {
             // dispatch route change action
 
             if (dispatch) {
-              dispatch((0, _actions.changeRoute)({
+              dispatch(changeRoute({
                 route: sanitized,
                 params: params,
                 location: location,
@@ -120,17 +95,17 @@ exports.default = function () {
 
             // resolve routes with async properties
             promises = [];
-            (0, _keys2.default)(resolvers).forEach(function (index) {
+            _Object$keys(resolvers).forEach(function (index) {
               var resolver = resolvers[index];
-              var response = _promise2.default.resolve(resolver({ route: route, params: params, location: location }));
+              var response = _Promise.resolve(resolver({ route: route, params: params, location: location }));
               promises.push(response.then(function () {
                 var _ref2 = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 
                 var action = _ref2.action,
                     component = _ref2.component,
-                    props = (0, _objectWithoutProperties3.default)(_ref2, ['action', 'component']);
+                    props = _objectWithoutProperties(_ref2, ['action', 'component']);
 
-                (0, _assign2.default)(route, props);
+                _Object$assign(route, props);
                 if (action) {
                   actions.push(action);
                 }
@@ -146,7 +121,7 @@ exports.default = function () {
             }
 
             _context.next = 22;
-            return _promise2.default.all(promises);
+            return _Promise.all(promises);
 
           case 22:
             if (!dispatch) {
@@ -156,9 +131,9 @@ exports.default = function () {
 
             promises = [];
             actions.forEach(function (action) {
-              if ((0, _utils.isFunc)(action)) {
+              if (isFunc(action)) {
                 promise = dispatch(action({ route: route, params: params, location: location }));
-                if ((0, _utils.isPromise)(promise)) {
+                if (isPromise(promise)) {
                   promises.push(promise);
                 }
               } else {
@@ -172,7 +147,7 @@ exports.default = function () {
             }
 
             _context.next = 28;
-            return _promise2.default.all(promises);
+            return _Promise.all(promises);
 
           case 28:
             if (!transition.invalid) {
@@ -189,7 +164,7 @@ exports.default = function () {
 
             // sort components into proper order before
             // adding back to route
-            route.components = (0, _keys2.default)(components).sort().map(function (key) {
+            route.components = _Object$keys(components).sort().map(function (key) {
               return components[key];
             });
 
@@ -208,14 +183,14 @@ exports.default = function () {
             // same render cycle that gets triggered by
             // the actions being triggered in this file
 
-            if (!(0, _utils.isFunc)(beforeRender)) {
+            if (!isFunc(beforeRender)) {
               _context.next = 38;
               break;
             }
 
             promise = beforeRender(result);
 
-            if (!(0, _utils.isPromise)(promise)) {
+            if (!isPromise(promise)) {
               _context.next = 38;
               break;
             }
@@ -240,14 +215,14 @@ exports.default = function () {
             }
 
             // prepare route object for dispatch
-            sanitized = (0, _utils.sanitize)(route);
+            sanitized = sanitize(route);
 
             // we don't want these in the state
             delete sanitized.components;
 
             // dispatch render route action
             if (dispatch) {
-              dispatch((0, _actions.renderRoute)({
+              dispatch(renderRoute({
                 route: sanitized,
                 params: params,
                 location: location
@@ -261,10 +236,10 @@ exports.default = function () {
             return _context.stop();
         }
       }
-    }, _callee, undefined);
+    }, _callee, _this);
   }));
 
   return function () {
     return _ref.apply(this, arguments);
   };
-}();
+})();
