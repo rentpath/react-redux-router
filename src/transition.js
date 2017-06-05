@@ -18,6 +18,7 @@ export default async (options = {}) => {
   const resolvers = {}
   const components = {}
 
+  let promise
   let promises
   let sanitized
 
@@ -104,7 +105,7 @@ export default async (options = {}) => {
     promises = []
     actions.forEach(action => {
       if (isFunc(action)) {
-        const promise = dispatch(action({ route, params, location }))
+        promise = dispatch(action({ route, params, location }))
         if (isPromise(promise)) {
           promises.push(promise)
         }
@@ -147,7 +148,10 @@ export default async (options = {}) => {
   // same render cycle that gets triggered by
   // the actions being triggered in this file
   if (isFunc(beforeRender)) {
-    beforeRender(result)
+    promise = beforeRender(result)
+    if (isPromise(promise)) {
+      await promise
+    }
   }
 
   // exit if transition was invalidated
