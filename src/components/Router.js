@@ -8,6 +8,7 @@ class Router extends PureComponent {
   static propTypes = {
     router: PropTypes.object.isRequired,
     routes: PropTypes.array.isRequired,
+    render: PropTypes.func,
     dispatch: PropTypes.func.isRequired,
     initialLocation: PropTypes.object,
     strict: PropTypes.bool,
@@ -65,16 +66,26 @@ class Router extends PureComponent {
   }
 
   render() {
-    const { router } = this.props
-    const { components = [] } = this.route
+    const {
+      router,
+      render,
+    } = this.props
 
-    return components.reduceRight((children, Route) => (
-      <Route
-        route={this.route}
-        params={router.params}
-        location={router.location}
-        children={children}
-      />
+    const props = {
+      ...router,
+      route: this.route,
+    }
+
+    if (render) {
+      return render(props)
+    }
+
+    if (!this.route.components) {
+      return null
+    }
+
+    return this.route.components.reduceRight((children, Route) => (
+      <Route {...props} children={children} />
     ), null)
   }
 }

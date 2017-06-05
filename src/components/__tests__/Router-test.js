@@ -61,4 +61,11 @@ describe('Router', () => {
     expect(wrapper.find('Foo')).to.have.length(1)
     expect(wrapper.find('Bar')).to.have.length(1)
   })
+
+  it('handles a "render" prop', () => {
+    const render = sinon.spy(() => null)
+    setup({ render })
+    expect(render.called).to.equal(true)
+    expect(Object.keys(render.args[0][0])).to.eql(['route', 'location', 'params'])
+  })
 })
