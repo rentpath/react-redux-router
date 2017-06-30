@@ -10,6 +10,7 @@
     "build": "yarn run clean && yarn run build:es && yarn run build:commonjs",
     "build:es": "BABEL_ENV=es babel --ignore __tests__ -d es src",
     "build:commonjs": "BABEL_ENV=commonjs babel --ignore __tests__ -d lib src",
+    "build:watch": "yarn run build:es -- --watch",
     "test": "BABEL_ENV=commonjs NODE_ENV=development mocha --compilers js:babel-core/register --recursive",
     "test:watch": "yarn run test -- --watch",
     "lint": "eslint src",
