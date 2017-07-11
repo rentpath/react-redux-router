@@ -40,6 +40,11 @@ class Router extends PureComponent {
         ...this.route,
         ...props.router.route,
       }
+    } else if (props.route !== this.props.route) {
+      this.route = {
+        ...this.route,
+        ...props.route,
+      }
     }
   }
 
