@@ -10,6 +10,7 @@ export default async (options = {}) => {
     location = {},
     dispatch,
     beforeRender,
+    context: ctx,
   } = options
 
   const route = {}
@@ -80,7 +81,7 @@ export default async (options = {}) => {
   promises = []
   Object.keys(resolvers).forEach(index => {
     const resolver = resolvers[index]
-    const response = Promise.resolve(resolver({ route, params, location }))
+    const response = Promise.resolve(resolver({ ...ctx, route, params, location }))
     promises.push(response.then(({
       action,
       component,
@@ -105,7 +106,7 @@ export default async (options = {}) => {
     promises = []
     actions.forEach(action => {
       if (isFunc(action)) {
-        promise = dispatch(action({ route, params, location }))
+        promise = dispatch(action({ ...ctx, route, params, location }))
         if (isPromise(promise)) {
           promises.push(promise)
         }
