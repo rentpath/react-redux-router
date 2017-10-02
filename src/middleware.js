@@ -69,7 +69,7 @@ export default (
           history[methods[action.method]](buildPath(action.location))
         }
         if (router) {
-          router.transition(action.location)
+          router.transition(action.location, action.status)
         }
 
         return resp
