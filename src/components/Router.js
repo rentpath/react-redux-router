@@ -51,6 +51,7 @@ class Router extends PureComponent {
   transition(location, status) {
     transition({
       location,
+      status,
       strict: this.props.strict,
       routes: this.props.routes,
       dispatch: this.props.dispatch,
@@ -58,11 +59,10 @@ class Router extends PureComponent {
         this.route = {
           ...result.route,
           ...this.props.router.route,
-          ...(status ? { status } : {}),
         }
         if (this.props.onChange) {
           this.props.onChange({
-            route: this.route,
+            route: result.route,
             params: result.params,
             location,
           })
