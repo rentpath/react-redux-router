@@ -1,6 +1,6 @@
 {
   "name": "@rentpath/react-redux-router",
-  "version": "3.0.0",
+  "version": "3.0.2",
   "author": "Ari Bouius <abouius@rentpath.com>",
   "main": "./lib/index.js",
   "module": "es/index.js",
