@@ -48,9 +48,10 @@ class Router extends PureComponent {
     }
   }
 
-  transition(location) {
+  transition(location, status) {
     transition({
       location,
+      status,
       strict: this.props.strict,
       routes: this.props.routes,
       dispatch: this.props.dispatch,

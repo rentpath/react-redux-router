@@ -10,6 +10,7 @@ export default async (options = {}) => {
     location = {},
     dispatch,
     beforeRender,
+    status,
   } = options
 
   const route = {}
@@ -52,7 +53,9 @@ export default async (options = {}) => {
   route.loading = true
 
   // ensure route has a status code
-  if (!route.status) {
+  if (status) {
+    route.status = status
+  } else if (!route.status) {
     route.status = branches.length ? STATUS_OK : STATUS_NOT_FOUND
   }
 
