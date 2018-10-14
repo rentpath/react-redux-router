@@ -9,6 +9,8 @@ export default async (options = {}) => {
     routes = [],
     location = {},
     dispatch,
+    getState,
+    store,
     beforeRender,
     status,
   } = options
@@ -83,7 +85,17 @@ export default async (options = {}) => {
   promises = []
   Object.keys(resolvers).forEach(index => {
     const resolver = resolvers[index]
-    const response = Promise.resolve(resolver({ route, params, location }))
+    const response = Promise.resolve(
+      resolver({
+        route,
+        params,
+        location,
+        // This has to be done because we get getState on initial match
+        // And store on subsequent client transitions
+        // At some point we could switch it to use store fully
+        getState: getState || store.getState,
+      })
+    )
     promises.push(response.then(({
       action,
       component,
@@ -144,6 +156,7 @@ export default async (options = {}) => {
     strict,
     params,
     location,
+    getState,
   }
 
   // this callback is useful for ensuring

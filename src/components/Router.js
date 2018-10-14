@@ -10,6 +10,7 @@ class Router extends PureComponent {
     routes: PropTypes.array.isRequired,
     render: PropTypes.func,
     dispatch: PropTypes.func.isRequired,
+    getState: PropTypes.func.isRequired,
     initialLocation: PropTypes.object,
     strict: PropTypes.bool,
     onChange: PropTypes.func,
@@ -52,6 +53,7 @@ class Router extends PureComponent {
     transition({
       location,
       status,
+      getState: this.props.getState,
       strict: this.props.strict,
       routes: this.props.routes,
       dispatch: this.props.dispatch,
