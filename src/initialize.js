@@ -11,6 +11,7 @@ export default async ({
   }
   return match({
     dispatch: store.dispatch,
+    getState: store.getState,
     location: store.dispatch(push(location)).location,
     ...options,
   })
