@@ -93,7 +93,7 @@ export default async (options = {}) => {
         // This has to be done because we get getState on initial match
         // And store on subsequent client transitions
         // At some point we could switch it to use store fully
-        getState: getState || store.getState,
+        getState: getState || (store || { getState: () => ({}) }).getState,
       })
     )
     promises.push(response.then(({
