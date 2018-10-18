@@ -94,6 +94,7 @@ export default async (options = {}) => {
         // And store on subsequent client transitions
         // At some point we could switch it to use store fully
         getState: getState || (store || { getState: () => ({}) }).getState,
+        dispatch,
       })
     )
     promises.push(response.then(({
