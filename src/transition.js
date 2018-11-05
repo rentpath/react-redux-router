@@ -2,6 +2,7 @@ import { matchRoutes } from 'little-router'
 import { changeRoute, renderRoute } from './actions'
 import { isFunc, isPromise, sanitize } from './utils'
 import { STATUS_OK, STATUS_NOT_FOUND } from './const'
+import { getGlobalResolves } from './globalResolves'
 
 export default async (options = {}) => {
   const {
@@ -83,8 +84,8 @@ export default async (options = {}) => {
 
   // resolve routes with async properties
   promises = []
-  Object.keys(resolvers).forEach(index => {
-    const resolver = resolvers[index]
+
+  const runResolver = (resolver, index) => {
     const response = Promise.resolve(
       resolver({
         route,
@@ -106,10 +107,19 @@ export default async (options = {}) => {
       if (action) {
         actions.push(action)
       }
-      if (component) {
+      if (component && index) {
         components[index] = component
       }
     }))
+  }
+
+  const globalResolves = getGlobalResolves()
+
+  globalResolves.forEach(runResolver)
+
+  Object.keys(resolvers).forEach(index => {
+    const resolver = resolvers[index]
+    runResolver(resolver, index)
   })
 
   if (promises.length) {
