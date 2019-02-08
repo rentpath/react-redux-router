@@ -9,11 +9,12 @@ describe('initialize', () => {
     const store = {
       dispatch: sinon.spy(arg => arg),
     }
+
     await initialize({ location, store, routes: [] })
     expect(store.dispatch).to.have.been.calledWith(push(location))
   })
 
-  it('throws when not given a store', () => {
+  it.only('throws when not given a store', async () => {
     expect(initialize).to.throw(Error)
   })
 })
