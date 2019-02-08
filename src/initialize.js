@@ -1,11 +1,11 @@
 import match from './match'
 import { push } from './actions'
 
-export default async ({
+export default ({
   store,
   location,
   ...options
-}) => {
+} = {}) => {
   if (!store) {
     throw new Error('Expected to receive a redux store.')
   }

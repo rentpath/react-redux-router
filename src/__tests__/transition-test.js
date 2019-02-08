@@ -1,7 +1,9 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
 import transition from '../transition'
-import { CHANGE_ROUTE, RENDER_ROUTE, STATUS_OK, STATUS_NOT_FOUND } from '../const'
+import {
+  CHANGE_ROUTE, RENDER_ROUTE, STATUS_OK, STATUS_NOT_FOUND,
+} from '../const'
 
 describe('transition', () => {
   const location = {
@@ -16,6 +18,7 @@ describe('transition', () => {
   it('returns a matched route', async () => {
     const routes = [{ path: '/foo', name: 'foo' }]
     const result = await transition({ routes, location })
+
     expect(result).to.have.deep.property('route.name', 'foo')
   })
 

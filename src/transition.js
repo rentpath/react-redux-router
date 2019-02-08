@@ -36,7 +36,11 @@ export default async (options = {}) => {
   // reduce route object while extracting
   // actions, resolvers, and components
   branches.forEach((branch, index) => {
-    const { route: { action, resolve, component, ...rest } } = branch
+    const {
+      route: {
+        action, resolve, component, ...rest
+      },
+    } = branch
 
     Object.assign(route, rest)
     Object.assign(params, branch.params)

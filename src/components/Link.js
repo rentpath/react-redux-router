@@ -37,11 +37,11 @@ export default class Link extends PureComponent {
     }
 
     if (
-      !event.defaultPrevented &&
-      event.button === 0 &&
-      !this.props.target &&
-      !isModifiedEvent(event) &&
-      this.context.store
+      !event.defaultPrevented
+      && event.button === 0
+      && !this.props.target
+      && !isModifiedEvent(event)
+      && this.context.store
     ) {
       event.preventDefault()
       const { dispatch } = this.context.store
@@ -55,7 +55,12 @@ export default class Link extends PureComponent {
   }
 
   render() {
-    const { to, replace: repl, dispatch, ...props } = this.props
+    const {
+      to,
+      replace: repl,
+      dispatch,
+      ...props
+    } = this.props
     const href = typeof to === 'string' ? to : parseLocation(to).href
 
     return (

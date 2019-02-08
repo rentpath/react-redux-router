@@ -8,7 +8,7 @@
     "default-case": [0],
     "import/no-extraneous-dependencies": ["error", { "devDependencies": true }],
     "react/jsx-uses-react": 1,
-    "react/jsx-uses-vars": 1,
+    "react/jsx-uses-vars": 1
   },
   "plugins": [
     "react"

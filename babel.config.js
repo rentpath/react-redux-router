@@ -1,38 +1,38 @@
-module.exports = function(api) {
+module.exports = api => {
   api.cache(true)
 
   const presets = [
     // We want to support most browsers, but don't include runtime-generator
     ['@babel/preset-env', {
+      modules: false,
       exclude: [
         'transform-async-to-generator',
         'transform-regenerator',
       ],
     }],
-    '@babel/preset-react'
+    '@babel/preset-react',
   ]
 
   const plugins = [
     // Get rid of regenerator-runtime requirement
-    ['module:fast-async', {
-      spec: true,
-    }],
+    'module:fast-async',
     '@babel/plugin-transform-runtime',
-    '@babel/plugin-proposal-class-properties',
-    '@babel/plugin-proposal-object-rest-spread',
+    ['@babel/plugin-transform-destructuring', { useBuiltIns: true }],
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }],
   ]
 
   const env = {
     commonjs: {
       plugins: [
-        ['@babel/plugin-transform-modules-commonjs', { loose: true }]
-      ]
-    }
+        ['@babel/plugin-transform-modules-commonjs', { loose: true }],
+      ],
+    },
   }
 
   return {
     presets,
     plugins,
-    env
+    env,
   }
 }

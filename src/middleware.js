@@ -35,7 +35,7 @@ export default (
   let transition
 
   if (config.history) {
-    history = config.history
+    ({ history } = config)
   } else if (config.history === undefined && typeof window !== 'undefined') {
     history = createHistory()
   }
@@ -50,7 +50,7 @@ export default (
   return next => action => {
     switch (action.type) {
       case INIT_ROUTER:
-        router = action.router
+        ({ router } = action)
         break
 
       case GO: case GO_BACK: case GO_FORWARD:
@@ -75,7 +75,7 @@ export default (
         return resp
 
       case CHANGE_ROUTE:
-        transition = action.transition
+        ({ transition } = action)
         break
 
       case CHANGE_STATUS:
