@@ -1,4 +1,4 @@
-import History from 'history'
+import { createBrowserHistory } from 'history'
 import { pop } from './actions'
 import {
   POP,
@@ -13,8 +13,6 @@ import {
   CHANGE_STATUS,
   CHANGE_LOCATION,
 } from './const'
-
-const createHistory = History.createBrowserHistory
 
 const methods = {
   [PUSH]: 'push',
@@ -39,7 +37,7 @@ export default (
   if (config.history) {
     ({ history } = config)
   } else if (config.history === undefined && typeof window !== 'undefined') {
-    history = createHistory()
+    history = createBrowserHistory()
   }
 
   if (history) {
