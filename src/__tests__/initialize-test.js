@@ -4,12 +4,13 @@ import initialize from '../initialize'
 import { push } from '../actions'
 
 describe('initialize', () => {
-  it('dispatches a push action', async () => {
+  it('dispatches a push action', () => {
     const location = '/foo'
     const store = {
       dispatch: sinon.spy(arg => arg),
     }
-    await initialize({ location, store, routes: [] })
+
+    initialize({ location, store, routes: [] })
     expect(store.dispatch).to.have.been.calledWith(push(location))
   })
 

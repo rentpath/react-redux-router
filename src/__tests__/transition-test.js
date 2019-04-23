@@ -1,7 +1,9 @@
 import { expect } from 'chai'
 import sinon from 'sinon'
 import transition from '../transition'
-import { CHANGE_ROUTE, RENDER_ROUTE, STATUS_OK, STATUS_NOT_FOUND } from '../const'
+import {
+  CHANGE_ROUTE, RENDER_ROUTE, STATUS_OK, STATUS_NOT_FOUND,
+} from '../const'
 
 describe('transition', () => {
   const location = {
@@ -16,18 +18,19 @@ describe('transition', () => {
   it('returns a matched route', async () => {
     const routes = [{ path: '/foo', name: 'foo' }]
     const result = await transition({ routes, location })
-    expect(result).to.have.deep.property('route.name', 'foo')
+
+    expect(result).to.have.deep.nested.property('route.name', 'foo')
   })
 
   it('returns a default route status', async () => {
     const routes = [{ path: '/foo' }]
     const result = await transition({ routes, location })
-    expect(result).to.have.deep.property('route.status', STATUS_OK)
+    expect(result).to.have.deep.nested.property('route.status', STATUS_OK)
   })
 
   it('returns a default route', async () => {
     const result = await transition({ routes: [], location })
-    expect(result).to.have.deep.property('route.status', STATUS_NOT_FOUND)
+    expect(result).to.have.deep.nested.property('route.status', STATUS_NOT_FOUND)
   })
 
   it('returns matched params', async () => {
@@ -106,18 +109,18 @@ describe('transition', () => {
 
       it(`dispatches a ${CHANGE_ROUTE} action`, async () => {
         const { args } = await setup()
-        expect(args).to.have.deep.property('0.0.type', CHANGE_ROUTE)
-        expect(args).to.have.deep.property('0.0.route').that.is.a('object')
-        expect(args).to.have.deep.property('0.0.params').that.is.a('object')
-        expect(args).to.have.deep.property('0.0.location').that.is.a('object')
+        expect(args).to.have.deep.nested.property('0.0.type', CHANGE_ROUTE)
+        expect(args).to.have.deep.nested.property('0.0.route').that.is.a('object')
+        expect(args).to.have.deep.nested.property('0.0.params').that.is.a('object')
+        expect(args).to.have.deep.nested.property('0.0.location').that.is.a('object')
       })
 
       it(`dispatches a ${RENDER_ROUTE} action`, async () => {
         const { args } = await setup()
-        expect(args).to.have.deep.property('1.0.type', RENDER_ROUTE)
-        expect(args).to.have.deep.property('1.0.route').that.is.a('object')
-        expect(args).to.have.deep.property('1.0.params').that.is.a('object')
-        expect(args).to.have.deep.property('1.0.location').that.is.a('object')
+        expect(args).to.have.deep.nested.property('1.0.type', RENDER_ROUTE)
+        expect(args).to.have.deep.nested.property('1.0.route').that.is.a('object')
+        expect(args).to.have.deep.nested.property('1.0.params').that.is.a('object')
+        expect(args).to.have.deep.nested.property('1.0.location').that.is.a('object')
       })
     })
 
