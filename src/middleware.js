@@ -1,4 +1,4 @@
-import createHistory from 'history/createBrowserHistory'
+import History from 'history'
 import { pop } from './actions'
 import {
   POP,
@@ -13,6 +13,8 @@ import {
   CHANGE_STATUS,
   CHANGE_LOCATION,
 } from './const'
+
+const createHistory = History.createBrowserHistory
 
 const methods = {
   [PUSH]: 'push',
