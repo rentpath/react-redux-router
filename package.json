@@ -1,6 +1,6 @@
 {
   "name": "@rentpath/react-redux-router",
-  "version": "3.4.0",
+  "version": "3.5.0",
   "author": "Ari Bouius <abouius@rentpath.com>",
   "main": "./lib/index.js",
   "module": "es/index.js",
@@ -13,7 +13,8 @@
     "test": "BABEL_ENV=commonjs NODE_ENV=development mocha",
     "test:watch": "yarn run test --watch",
     "lint": "eslint src",
-    "lint:fix": "yarn run lint -- --fix"
+    "lint:fix": "yarn run lint -- --fix",
+    "prepublish": "yarn test && yarn lint && yarn build"
   },
   "devDependencies": {
     "@babel/cli": "^7.4.3",
