@@ -48,12 +48,12 @@ describe('Router', () => {
 
   it('dispatches a `initRouter` action', () => {
     const { props } = setup()
-    expect(props.dispatch.args).to.have.deep.property('0.0.type', INIT_ROUTER)
+    expect(props.dispatch.args).to.have.deep.nested.property('0.0.type', INIT_ROUTER)
   })
 
   it('dispatches a `push` action if given an initialLocation', () => {
     const { props } = setup({ initialLocation: { pathname: '/foo' } })
-    expect(props.dispatch.args).to.have.deep.property('1.0.type', CHANGE_LOCATION)
+    expect(props.dispatch.args).to.have.deep.nested.property('1.0.type', CHANGE_LOCATION)
   })
 
   it('renders the current route', () => {

@@ -5,6 +5,7 @@ module.exports = api => {
     // We want to support most browsers, but don't include runtime-generator
     ['@babel/preset-env', {
       modules: false,
+      targets: '> 0.25%, not op_mini all',
       exclude: [
         'transform-async-to-generator',
         'transform-regenerator',
