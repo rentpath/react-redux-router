@@ -1,6 +1,6 @@
 {
   "name": "@rentpath/react-redux-router",
-  "version": "3.5.2",
+  "version": "3.5.3",
   "author": "Ari Bouius <abouius@rentpath.com>",
   "main": "./lib/index.js",
   "module": "es/index.js",
@@ -17,17 +17,17 @@
     "prepublish": "yarn test && yarn lint && yarn build"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.3",
-    "@babel/core": "^7.4.3",
-    "@babel/plugin-proposal-class-properties": "^7.4.0",
-    "@babel/plugin-proposal-object-rest-spread": "^7.4.3",
-    "@babel/plugin-transform-destructuring": "^7.4.3",
-    "@babel/plugin-transform-modules-commonjs": "^7.4.3",
-    "@babel/plugin-transform-runtime": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
+    "@babel/cli": "^7.4.4",
+    "@babel/core": "^7.4.5",
+    "@babel/plugin-proposal-class-properties": "^7.4.4",
+    "@babel/plugin-proposal-object-rest-spread": "^7.4.4",
+    "@babel/plugin-transform-destructuring": "^7.4.4",
+    "@babel/plugin-transform-modules-commonjs": "^7.4.4",
+    "@babel/plugin-transform-runtime": "^7.4.4",
+    "@babel/preset-env": "^7.4.5",
     "@babel/preset-react": "^7.0.0",
-    "@babel/register": "^7.4.0",
-    "babel-eslint": "^10.0.1",
+    "@babel/register": "^7.4.4",
+    "babel-eslint": "^10.0.2",
     "chai": "^4.2.0",
     "enzyme": "^3.9.0",
     "enzyme-adapter-react-16": "^1.12.1",
@@ -36,30 +36,33 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-react": "^7.12.4",
     "fast-async": "^7",
-    "jsdom": "^15.0.0",
+    "jsdom": "^15.1.1",
     "jsdom-global": "^3.0.2",
     "mocha": "^6.1.4",
+    "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-redux": "^7.0.2",
+    "react-redux": "^7.1.0",
     "react-test-renderer": "^16.8.6",
     "redux": "^4.0.1",
+    "redux-mock-store": "^1.5.3",
     "sinon": "^7.3.2",
     "sinon-chai": "^3.3.0"
   },
   "dependencies": {
-    "@babel/runtime": "^7.4.3",
+    "@babel/runtime": "^7.4.5",
     "history": "^4.9.0",
     "little-router": "2.3.2",
-    "parse-location": "^1.0.5",
-    "prop-types": "^15.7.2"
+    "parse-location": "^1.0.5"
   },
   "peerDependencies": {
-    "react": "^16.5.0",
-    "react-redux": "^4.0.0 || ^5.0.0",
-    "redux": "^3.7.2"
+    "prop-types": "^15.7.2",
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
+    "react-redux": "^7.1.0",
+    "redux": "^4.0.1"
   },
   "engines": {
-    "node": ">=8.0.0"
+    "node": ">=11.9.0"
   }
 }

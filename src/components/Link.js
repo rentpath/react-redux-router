@@ -1,5 +1,6 @@
 import React, { PureComponent } from 'react'
 import PropTypes from 'prop-types'
+import { ReactReduxContext } from 'react-redux'
 import parseLocation from 'parse-location'
 import { push, replace } from '../actions'
 
@@ -7,19 +8,16 @@ const isModifiedEvent = event => (
   !!(event.metaKey || event.altKey || event.ctrlKey || event.shiftKey)
 )
 
-export default class Link extends PureComponent {
-  static contextTypes = {
-    store: PropTypes.object,
-  }
-
+class InnerLink extends PureComponent {
   static propTypes = {
+    onClick: PropTypes.func,
+    replace: PropTypes.bool,
+    store: PropTypes.object,
+    target: PropTypes.string,
     to: PropTypes.oneOfType([
       PropTypes.string,
       PropTypes.object,
     ]).isRequired,
-    replace: PropTypes.bool,
-    onClick: PropTypes.func,
-    target: PropTypes.string,
   }
 
   static defaultProps = {
@@ -41,10 +39,10 @@ export default class Link extends PureComponent {
       && event.button === 0
       && !this.props.target
       && !isModifiedEvent(event)
-      && this.context.store
+      && this.props.store
     ) {
+      const { dispatch } = this.props.store
       event.preventDefault()
-      const { dispatch } = this.context.store
 
       if (this.props.replace) {
         dispatch(replace(this.props.to))
@@ -72,3 +70,11 @@ export default class Link extends PureComponent {
     )
   }
 }
+
+const Link = outerProps => (
+  <ReactReduxContext.Consumer>
+    {({ store }) => <InnerLink {...outerProps} store={store} />}
+  </ReactReduxContext.Consumer>
+)
+
+export default Link

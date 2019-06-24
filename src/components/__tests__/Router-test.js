@@ -11,6 +11,7 @@ describe('Router', () => {
   const setup = data => {
     const props = {
       dispatch: sinon.spy(),
+      getState: () => {},
       routes: [],
       router: {
         route: {
