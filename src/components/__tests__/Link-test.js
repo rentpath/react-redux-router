@@ -1,24 +1,42 @@
+import { Provider } from 'react-redux'
 import React from 'react'
+import configureStore from 'redux-mock-store'
 import { expect } from 'chai'
-import { shallow } from 'enzyme'
+import { mount } from 'enzyme'
 import sinon from 'sinon'
 import Link from '../Link'
 import { push, replace } from '../../actions'
 
 describe('Link', () => {
+  let dispatch
+
+  const setup = props => {
+    const middlewares = []
+    const initialState = {}
+    const mockStore = configureStore(middlewares)(initialState)
+    dispatch = sinon.spy()
+    mockStore.dispatch = dispatch
+
+    return mount(
+      <Provider store={mockStore}>
+        <Link {...props} />
+      </Provider>
+    )
+  }
+
   it('renders an anchor element', () => {
-    const wrapper = shallow(<Link to="/" />)
-    expect(wrapper.type()).to.equal('a')
+    const wrapper = setup({ to: '/' })
+    expect(wrapper.find('InnerLink a').length).to.equal(1)
   })
 
   it('renders a string `to` prop', () => {
-    const wrapper = shallow(<Link to="/foo" />)
-    expect(wrapper.prop('href')).to.equal('/foo')
+    const wrapper = setup({ to: '/foo' })
+    expect(wrapper.find('InnerLink a').prop('href')).to.equal('/foo')
   })
 
   it('renders a object `to` prop', () => {
-    const wrapper = shallow(<Link to={{ pathname: '/foo' }} />)
-    expect(wrapper.prop('href')).to.equal('/foo')
+    const wrapper = setup({ to: { pathname: '/foo' } })
+    expect(wrapper.find('InnerLink a').prop('href')).to.equal('/foo')
   })
 
   describe('when clicked', () => {
@@ -28,42 +46,33 @@ describe('Link', () => {
     }
 
     it('dispatches a `changeLocation` action', () => {
-      const dispatch = sinon.spy()
-      const context = { store: { dispatch } }
-      const wrapper = shallow(
-        <Link to={{ pathname: '/' }} />,
-        { context },
-      )
-      wrapper.simulate('click', event)
+      const wrapper = setup({ to: { pathname: '/' } })
+      wrapper.find('InnerLink').simulate('click', event)
       expect(dispatch).to.have.been.calledWith(push('/'))
     })
 
     it('handles a `replace` prop', () => {
-      const dispatch = sinon.spy()
-      const context = { store: { dispatch } }
-      const wrapper = shallow(
-        <Link to={{ pathname: '/' }} replace />,
-        { context },
+      const wrapper = setup(
+        { to: { pathname: '/' }, replace: true }
       )
-      wrapper.simulate('click', event)
+      wrapper.find('InnerLink').simulate('click', event)
       expect(dispatch).to.have.been.calledWith(replace('/'))
     })
 
     it('handles a `onClick` prop', () => {
       const onClick = sinon.spy()
-      const wrapper = shallow(<Link to={{ pathname: '/' }} onClick={onClick} />)
-      wrapper.simulate('click', event)
-      expect(onClick).to.have.been.calledWith(event)
+      const wrapper = setup({ to: { pathname: '/' }, onClick })
+      wrapper.find('InnerLink').simulate('click', event)
+      const calledWithSyntheticEvent = onClick
+        .args[0][0]
+        .constructor
+        .name === 'SyntheticEvent'
+      expect(calledWithSyntheticEvent).to.equal(true)
     })
 
     it('handles a `target` prop', () => {
-      const dispatch = sinon.spy()
-      const context = { store: { dispatch } }
-      const wrapper = shallow(
-        <Link to={{ pathname: '/' }} target="#" />,
-        { context },
-      )
-      wrapper.simulate('click', event)
+      const wrapper = setup({ to: { pathname: '/' }, target: '#' })
+      wrapper.find('InnerLink').simulate('click', event)
       expect(dispatch.called).to.equal(false)
     })
   })
