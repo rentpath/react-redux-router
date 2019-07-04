@@ -63,6 +63,7 @@ export default (
         resp = next(action)
 
         if (transition) {
+          console.log('transition invalid', transition, action.location, action.status)
           transition.invalid = true
         }
         if (history && methods[action.method]) {

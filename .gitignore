@@ -1,4 +1,5 @@
 es
-lib
+#lib
 node_modules
 *.log
+.idea
