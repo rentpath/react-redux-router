@@ -50,3 +50,28 @@ Moves location forward.
 Renders a link that updates the current location when clicked.
 - [`to`] \(*String|Object*): The location to use for the `href` attribute.
 - [`replace`] \(*Bool*): Whether to use dispatch a `replace` action when clicked.
+
+
+### rendering
+
+By using the `<Router />`, react will update your component tree post transition.
+In some cases, such as displaying a modal on a url change it can be desirable to
+skip the re-rendering of said route for slight performance boost.
+
+consider the following route
+
+```tsx
+{
+  path: '/somePath'
+  resolve: () => modalParam ? { dangerouslySkipRender: true } : { component: Page}
+}
+```
+
+under the hood, this prop sets the component up to automatically reject updates on transition to something like `/somePath?displayModal=true`.
+
+while useful in some cases, it is considered a bad pattern to block updates to components in such way. according to the react team:
+
+> shouldComponentUpdate - This method only exists as a performance optimization. Do not rely on it to “prevent” a rendering, as this can lead to bugs. Consider using the built-in PureComponent instead of writing shouldComponentUpdate() by hand. PureComponent performs a shallow comparison of props and state, and reduces the chance that you’ll skip a necessary update.
+
+we should avoid blocking updates to a component directly. you should avoid using this props when you can and focus on
+creating lighter connected components that do not update so agressively instead.

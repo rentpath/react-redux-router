@@ -102,6 +102,7 @@ export default async (options = {}) => {
         dispatch,
       })
     )
+
     promises.push(response.then(({
       action,
       component,
@@ -172,6 +173,10 @@ export default async (options = {}) => {
     params,
     location,
     getState,
+    // NOTE: resolvers can return { dangerouslySkipRender: true }
+    // to suppport a route change without providing a
+    // component
+    dangerouslySkipRender: route.dangerouslySkipRender,
   }
 
   // this callback is useful for ensuring
@@ -204,7 +209,8 @@ export default async (options = {}) => {
   delete sanitized.components
 
   // dispatch render route action
-  if (dispatch) {
+
+  if (dispatch && !route.dangerouslySkipRender) {
     dispatch(renderRoute({
       route: sanitized,
       params,

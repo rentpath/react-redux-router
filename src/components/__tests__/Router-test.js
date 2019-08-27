@@ -63,6 +63,15 @@ describe('Router', () => {
     expect(wrapper.find('Bar')).to.have.length(1)
   })
 
+
+  it('supports dangerouslySkipRender for subsequent updates', () => {
+    const { wrapper } = setup()
+    const dangerouslySkipRender = true
+    const actual = wrapper.instance().shouldComponentUpdate({ dangerouslySkipRender })
+    const expected = false
+    expect(actual).to.eql(expected)
+  })
+
   it('handles a "render" prop', () => {
     const render = sinon.spy(() => null)
     setup({ render })

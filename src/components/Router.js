@@ -1,10 +1,11 @@
-import React, { PureComponent } from 'react'
+import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import shallowCompare from 'react-addons-shallow-compare'
 import transition from '../transition'
 import { initRouter, pop } from '../actions'
 
-class Router extends PureComponent {
+class Router extends Component {
   static propTypes = {
     router: PropTypes.object.isRequired,
     routes: PropTypes.array.isRequired,
@@ -12,6 +13,7 @@ class Router extends PureComponent {
     dispatch: PropTypes.func.isRequired,
     getState: PropTypes.func.isRequired,
     initialLocation: PropTypes.object,
+    dangerouslySkipRender: PropTypes.bool,
     strict: PropTypes.bool,
     onChange: PropTypes.func,
     route: PropTypes.shape({
@@ -33,6 +35,14 @@ class Router extends PureComponent {
     if (props.initialLocation) {
       props.dispatch(pop(props.initialLocation))
     }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextProps.dangerouslySkipRender) {
+      return false
+    }
+
+    return shallowCompare(this, nextProps, nextState)
   }
 
   componentWillUpdate(props) {
