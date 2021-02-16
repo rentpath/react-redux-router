@@ -75,3 +75,11 @@ while useful in some cases, it is considered a bad pattern to block updates to c
 
 we should avoid blocking updates to a component directly. you should avoid using this props when you can and focus on
 creating lighter connected components that do not update so agressively instead.
+
+## Releasing
+
+1. Inside your pull request, bump the semantic version in `package.json`
+2. Merge the pull request
+3. Wait for the GitHub Actions [workflow](https://github.com/rentpath/actions) to publish your new package [here](https://github.com/rentpath/react-redux-router/packages).
+
+Note: You can also manually [draft a release](https://github.com/rentpath/react-redux-router/releases/new) to set off the package publishing workflow.
