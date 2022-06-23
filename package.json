@@ -36,7 +36,7 @@
     "eslint-plugin-import": "^2.17.2",
     "eslint-plugin-react": "^7.12.4",
     "fast-async": "^7",
-    "jsdom": "^15.1.1",
+    "jsdom": "^16.5.0",
     "jsdom-global": "^3.0.2",
     "mocha": "^6.1.4",
     "prop-types": "^15.7.2",
